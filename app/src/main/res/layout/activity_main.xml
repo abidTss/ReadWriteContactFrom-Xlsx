@@ -10,18 +10,42 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="jago re"
-        />
+        android:text="jago re" />
+
     <Button
         android:id="@+id/buttonpick"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="- PICK a file -"
-        />
+        android:text="- PICK a file -" />
+
     <TextView
         android:id="@+id/textfile"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <SeekBar
+        android:layout_margin="10dp"
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/startSaving"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Start saving"
+        android:layout_gravity="center_horizontal"
         />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/stopService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:layout_gravity="center_horizontal"
+        />
+
 
 </LinearLayout>

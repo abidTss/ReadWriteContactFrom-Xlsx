@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     private void saveContact(String name, String phoneNo) {
 
         ArrayList<ContentProviderOperation> ops =
-                new ArrayList<ContentProviderOperation>();
+                new ArrayList<>();
 
         ops.add(ContentProviderOperation.newInsert(
                 ContactsContract.RawContacts.CONTENT_URI)
