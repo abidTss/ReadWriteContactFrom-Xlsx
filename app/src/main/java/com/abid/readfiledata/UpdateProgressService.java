@@ -21,37 +21,42 @@ import java.io.File;
  * Created by abid on 8/12/17.
  */
 
-public class UpdateProgressService extends AppCompatActivity implements BackgroundService.Callbacks {
+public class UpdateProgressService extends AppCompatActivity {
     SeekBar seekBar;
     Button stopService, btnPickFile, btnStartSaving;
-    TextView tvupdation;
+    TextView tvupdation, tvFileName, tvSavedSuccessfully;
     private static final int PICKFILE_RESULT_CODE = 1;
     String exactPath;
     private AResultReceiver mResultReceiver;
+    Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         seekBar = findViewById(R.id.seekBar);
+        seekBar.setEnabled(false);
         stopService = findViewById(R.id.stopService);
         btnPickFile = findViewById(R.id.buttonpick);
         btnStartSaving = findViewById(R.id.startSaving);
+        tvSavedSuccessfully = findViewById(R.id.tvSavedSuccessfully);
         tvupdation = findViewById(R.id.textfile);
+        tvFileName = findViewById(R.id.tvFileName);
         mResultReceiver = new AResultReceiver(new Handler());
         stopService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+            stopService(intent);
             }
         });
+
         btnStartSaving.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnStartSaving.setVisibility(View.GONE);
                 stopService.setVisibility(View.VISIBLE);
                 if (exactPath != null) {
-                    Intent intent = new Intent(UpdateProgressService.this, UpdateProgressIntentService.class);
+                    intent = new Intent(UpdateProgressService.this, UpdateProgressIntentService.class);
                     intent.putExtra(AppConstant.RECEIVER, mResultReceiver);
                     intent.putExtra("filePath", exactPath);
                     startService(intent);
@@ -63,7 +68,7 @@ public class UpdateProgressService extends AppCompatActivity implements Backgrou
             @Override
             public void onClick(View v) {
                 String[] mimeTypes =
-                        {"image/*", "application/*|text/*"};
+                        {"application/*|text/*"};
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
 
@@ -93,17 +98,12 @@ public class UpdateProgressService extends AppCompatActivity implements Backgrou
             case PICKFILE_RESULT_CODE:
                 if (resultCode == RESULT_OK) {
                     exactPath = FilePath.getPath(UpdateProgressService.this, data.getData());
-                    /*file = new File(FilePath.getPath(UpdateProgressService.this, data.getData()));
-                    Log.e("file ","dhdh "+file);*/
+                    File file = new File(FilePath.getPath(UpdateProgressService.this, data.getData()));
+                    tvFileName.setText(file.getName());
                     btnStartSaving.setVisibility(View.VISIBLE);
                 }
                 break;
         }
-    }
-
-    @Override
-    public void updateClient(String data) {
-        tvupdation.setText("Current Progress : " + data);
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -124,11 +124,18 @@ public class UpdateProgressService extends AppCompatActivity implements Backgrou
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            String mAddressOutput = resultData.getString(AppConstant.RESULT_DATA_KEY);
-
+            int currentProgress = resultData.getInt(AppConstant.CURRENT_PROGRESS);
+            int totalCount = resultData.getInt(AppConstant.TOTAL_COUNT);
             if (resultCode == AppConstant.SUCCESS_RESULT) {
-                Log.e("Address data", mAddressOutput);
-                tvupdation.setText(mAddressOutput);
+                Log.e("Address data", currentProgress + " :- " + totalCount);
+                if (currentProgress == totalCount) {
+                    tvSavedSuccessfully.setVisibility(View.VISIBLE);
+                    stopService.setVisibility(View.GONE);
+                }
+                seekBar.setMax(totalCount);
+                seekBar.setProgress(currentProgress);
+                tvupdation.setText("Current progress : " + currentProgress + "/" + totalCount);
+
             }
         }
     }

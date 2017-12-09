@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ReadFileData</string>
+    <string name="import_contact_into_xlsx">Import Contact from Xlsx</string>
+    <string name="export_contact">Export Contacts into Xlsx</string>
+    <string name="about_app">About the app</string>
+    <string name="rate_now">Rate this app</string>
 </resources>

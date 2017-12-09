@@ -53,7 +53,7 @@ public class UpdateProgressIntentService extends IntentService {
                 Row row = sheet.getRow(r);
                 int cellsCount = row.getPhysicalNumberOfCells();
                 String name="",phoneNo="";
-                deliverResultToReceiver(AppConstant.SUCCESS_RESULT,"Current progress : "+(r+1)+"/"+rowsCount);
+                deliverResultToReceiver(AppConstant.SUCCESS_RESULT,(r+1),rowsCount);
                 for (int c = 0; c<cellsCount; c++) {
                     String cellInfo = "r:"+r+"; c:"+c+"; v:"+getCellAsString(row, c, formulaEvaluator);
                     String value = getCellAsString(row, c, formulaEvaluator);
@@ -162,9 +162,10 @@ public class UpdateProgressIntentService extends IntentService {
 
     }
 
-    private void deliverResultToReceiver(int resultCode, String message) {
+    private void deliverResultToReceiver(int resultCode, int currentProgrees,int totalCount) {
         Bundle bundle = new Bundle();
-        bundle.putString(AppConstant.RESULT_DATA_KEY, message);
+        bundle.putInt(AppConstant.CURRENT_PROGRESS, currentProgrees);
+        bundle.putInt(AppConstant.TOTAL_COUNT, totalCount);
         mReceiver.send(resultCode, bundle);
     }
 }

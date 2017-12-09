@@ -12,4 +12,6 @@ public class AppConstant {
     public static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
     public static final int SUCCESS_RESULT = 0;
     public static final int FAILURE_RESULT = 1;
+    public static final String CURRENT_PROGRESS = "currentProgress";
+    public static final String TOTAL_COUNT ="totalCount" ;
 }
