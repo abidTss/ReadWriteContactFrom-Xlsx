@@ -51,7 +51,6 @@ public class UpdateProgressService extends AppCompatActivity implements Backgrou
                 btnStartSaving.setVisibility(View.GONE);
                 stopService.setVisibility(View.VISIBLE);
                 if (exactPath != null) {
-                    Log.e("ya", "aya yha");
                     Intent intent = new Intent(UpdateProgressService.this, UpdateProgressIntentService.class);
                     intent.putExtra(AppConstant.RECEIVER, mResultReceiver);
                     intent.putExtra("filePath", exactPath);
@@ -86,8 +85,6 @@ public class UpdateProgressService extends AppCompatActivity implements Backgrou
 
 
     }
-
-    File file;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
