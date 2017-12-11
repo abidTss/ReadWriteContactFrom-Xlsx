@@ -12,11 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:label="Import Contacts"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="Import Contacts">
+        </activity>
 
         <activity android:name=".UpdateProgressService"/>
-
         <activity android:name=".HomeScreen"
             android:theme="@style/AppTheme.NoActionBar"
             >
@@ -30,6 +31,8 @@
         <service
             android:process=":service"
             android:name=".UpdateProgressIntentService"/>
+
+        <activity android:name=".ExportContact"/>
     </application>
 
 </manifest>

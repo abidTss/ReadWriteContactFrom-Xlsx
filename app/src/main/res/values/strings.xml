@@ -4,4 +4,5 @@
     <string name="export_contact">Export Contacts into Xlsx</string>
     <string name="about_app">About the app</string>
     <string name="rate_now">Rate this app</string>
+    <string name="send_to">Send to...</string>
 </resources>
