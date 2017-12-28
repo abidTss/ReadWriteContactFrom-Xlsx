@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -42,22 +44,28 @@ public class ExportContact extends AppCompatActivity {
         //XXX: Using blank template file as a workaround to make it work
         //Original library contained something like 80K methods and I chopped it to 60k methods
         //so, some classes are missing, and some things not working properly
-        InputStream stream = getResources().openRawResource(R.raw.template);
+      //  InputStream stream = getResources().openRawResource(R.raw.template);
         try {
-            XSSFWorkbook workbook = new XSSFWorkbook(stream);
-            XSSFSheet sheet = workbook.getSheetAt(0);
+            XSSFWorkbook workbook = new XSSFWorkbook();
+         //   XSSFSheet sheet = workbook.getSheetAt(0);
             //XSSFWorkbook workbook = new XSSFWorkbook();
-            //XSSFSheet sheet = workbook.createSheet(WorkbookUtil.createSafeSheetName("mysheet"));
+            XSSFSheet sheet = workbook.createSheet(WorkbookUtil.createSafeSheetName("mysheet"));
             for (int i=0;i<10;i++) {
+                Log.e("creating xlsx row","---"+i);
                 Row row = sheet.createRow(i);
                 Cell cell = row.createCell(0);
-                cell.setCellValue(i);
+                Cell cell2 = row.createCell(1);
+                cell.setCellValue("abid "+i);
+                cell2.setCellValue("705347550"+i);
             }
-            String outFileName = "filetoshare.xlsx";
+            String outFileName = "mysheet.xlsx";
             Log.e("writingFile"+outFileName,"data");
-            File cacheDir = getCacheDir();
-            File outFile = new File(cacheDir, outFileName);
-            OutputStream outputStream = new FileOutputStream(outFile.getAbsolutePath());
+            File cacheDir =Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DOWNLOADS);
+            Log.e("cache dir ",cacheDir+" --");
+            File outFile = new File(cacheDir , outFileName);
+            OutputStream outputStream = new FileOutputStream(FilePath.getPath(ExportContact.this,Uri.fromFile(outFile)));
+            // Log.e("file path : ",FilePath.getPath(ExportContact.this,Uri.fromFile(outFileName)));
             workbook.write(outputStream);
             outputStream.flush();
             outputStream.close();
