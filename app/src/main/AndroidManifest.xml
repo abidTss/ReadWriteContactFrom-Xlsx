@@ -36,6 +36,9 @@
 
         <activity android:name=".ExportContact"/>
 
+        <service
+            android:name=".IntentServiceForExportContact"/>
+
     </application>
 
 </manifest>

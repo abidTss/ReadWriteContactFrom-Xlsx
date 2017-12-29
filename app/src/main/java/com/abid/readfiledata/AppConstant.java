@@ -14,4 +14,5 @@ public class AppConstant {
     public static final int FAILURE_RESULT = 1;
     public static final String CURRENT_PROGRESS = "currentProgress";
     public static final String TOTAL_COUNT ="totalCount" ;
+    public static String RECEIVER_EXTRACTCONTACT=PACKAGE_NAME + ".EXTRACTCONTACT_RECEIVER";
 }

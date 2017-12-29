@@ -4,51 +4,42 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.util.WorkbookUtil;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Created by abid on 11/12/17.
  */
 
 public class ExportContact extends AppCompatActivity {
+    private BResultReceiver mreciver;
+    Intent intent;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export_contact);
+        mreciver=new BResultReceiver(new Handler());
         findViewById(R.id.btnStart).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onWriteClick();
+                Log.e("sh","dskjd");
+                intent = new Intent(ExportContact.this, IntentServiceForExportContact.class);
+                intent.putExtra(AppConstant.RECEIVER_EXTRACTCONTACT, mreciver);
+               // intent.putExtra("filePath", exactPath);
+                startService(intent);
             }
         });
+
 
     }
 
     public void onWriteClick() {
-        Log.e("writing xlsx file","v");
-        //XXX: Using blank template file as a workaround to make it work
-        //Original library contained something like 80K methods and I chopped it to 60k methods
-        //so, some classes are missing, and some things not working properly
-      //  InputStream stream = getResources().openRawResource(R.raw.template);
-        try {
+       /* try {
             XSSFWorkbook workbook = new XSSFWorkbook();
-         //   XSSFSheet sheet = workbook.getSheetAt(0);
-            //XSSFWorkbook workbook = new XSSFWorkbook();
             XSSFSheet sheet = workbook.createSheet(WorkbookUtil.createSafeSheetName("mysheet"));
             for (int i=0;i<10;i++) {
                 Log.e("creating xlsx row","---"+i);
@@ -72,9 +63,10 @@ public class ExportContact extends AppCompatActivity {
             Log.e("sharing file...","data");
             share(outFileName, getApplicationContext());
         } catch (Exception e) {
-            /* proper exception handling to be here */
+            *//* proper exception handling to be here *//*
             Log.e(e.toString(),"error");
-        }
+        }*/
+
     }
 
     public void share(String fileName, Context context) {
@@ -86,4 +78,34 @@ public class ExportContact extends AppCompatActivity {
         shareIntent.setType("application/octet-stream");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
+
+     class BResultReceiver extends ResultReceiver{
+         /**
+          * Create a new ResultReceive to receive results.  Your
+          * {@link #onReceiveResult} method will be called from the thread running
+          * <var>handler</var> if given, or from an arbitrary thread if null.
+          *
+          * @param handler
+          */
+         public BResultReceiver(Handler handler) {
+             super(handler);
+         }
+
+         @Override
+         protected void onReceiveResult(int resultCode, Bundle resultData) {
+             int currentProgress = resultData.getInt(AppConstant.CURRENT_PROGRESS);
+             int totalCount = resultData.getInt(AppConstant.TOTAL_COUNT);
+             if (resultCode == AppConstant.SUCCESS_RESULT) {
+                 Log.e("Address data", currentProgress + " :- " + totalCount);
+                 /*if (currentProgress == totalCount) {
+                     tvSavedSuccessfully.setVisibility(View.VISIBLE);
+                     stopService.setVisibility(View.GONE);
+                 }
+                 seekBar.setMax(totalCount);
+                 seekBar.setProgress(currentProgress);
+                 tvupdation.setText("Current progress : " + currentProgress + "/" + totalCount);*/
+
+             }
+         }
+     }
 }
