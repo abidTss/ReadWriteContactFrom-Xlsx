@@ -3,7 +3,28 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textfile2"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" current progress : 0/0" />
 
+    <SeekBar
+        style="@style/tallerBarStyle"
+        android:layout_margin="10dp"
+        android:id="@+id/seekBar2"
+        android:enabled="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:progressDrawable="@drawable/custom_seekbar"
+        android:layout_width="match_parent"
+        android:splitTrack="false"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        android:layout_height="wrap_content" />
     <Button
         android:id="@+id/btnStart"
         android:layout_width="wrap_content"

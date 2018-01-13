@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 /**
  * Created by abid on 11/12/17.
@@ -17,11 +19,16 @@ import android.view.View;
 
 public class ExportContact extends AppCompatActivity {
     private BResultReceiver mreciver;
+    TextView tvupdation;
     Intent intent;
+    SeekBar seekBar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export_contact);
+        seekBar = findViewById(R.id.seekBar2);
+        seekBar.setEnabled(false);
+        tvupdation = findViewById(R.id.textfile2);
         mreciver=new BResultReceiver(new Handler());
         findViewById(R.id.btnStart).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,10 +107,10 @@ public class ExportContact extends AppCompatActivity {
                  /*if (currentProgress == totalCount) {
                      tvSavedSuccessfully.setVisibility(View.VISIBLE);
                      stopService.setVisibility(View.GONE);
-                 }
+                 }*/
                  seekBar.setMax(totalCount);
                  seekBar.setProgress(currentProgress);
-                 tvupdation.setText("Current progress : " + currentProgress + "/" + totalCount);*/
+                 tvupdation.setText("Current progress : " + currentProgress + "/" + totalCount);
 
              }
          }
